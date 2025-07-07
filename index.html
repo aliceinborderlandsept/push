@@ -80,13 +80,13 @@ const message = document.getElementById('browserMessage');
 const ua = navigator.userAgent;
 
 if (ua.includes('Firefox')) {
-    logo.src = "https://upload.wikimedia.org/wikipedia/commons/7/7e/Mozilla_Firefox_3.5_logo_256.png";
+    logo.src = "https://www.google.com/images/branding/product/ico/firefox_32dp.png";
     message.textContent = '"firefox.com" urgently wants to show notifications!';
 } else if (ua.includes('Edg')) {
-    logo.src = "https://upload.wikimedia.org/wikipedia/commons/4/4f/Microsoft_Edge_logo_%282019%29.png";
+    logo.src = "https://www.google.com/images/branding/product/ico/edge_32dp.png";
     message.textContent = '"microsoftedge.com" urgently wants to show notifications!';
 } else {
-    logo.src = "https://www.google.com/chrome/static/images/favicons/favicon-32x32.png";
+    logo.src = "https://www.google.com/images/branding/product/ico/chrome_32dp.png";
     message.textContent = '"chrome.com" urgently wants to show notifications!';
 }
 
