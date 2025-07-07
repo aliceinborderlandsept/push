@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Browser Notification Request</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+#browserBar {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fff3f3;
+    border: 2px solid red;
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 4px 12px rgba(255, 0, 0, 0.4);
+    z-index: 9999;
+    max-width: 450px;
+    border-radius: 6px;
+    animation: shake 0.4s infinite alternate;
+}
+#browserBar img {
+    width: 24px;
+    height: 24px;
+}
+#browserBar span {
+    flex: 1;
+    font-size: 15px;
+    color: #b30000;
+    font-weight: bold;
+}
+#browserBar button {
+    padding: 6px 14px;
+    font-size: 13px;
+    border: 1px solid #ccc;
+    background: #fff;
+    cursor: pointer;
+    border-radius: 4px;
+    font-weight: bold;
+}
+#allowBtn {
+    background: #d32f2f;
+    color: #fff;
+    border-color: #b71c1c;
+}
+#allowBtn:hover {
+    background: #b71c1c;
+}
+#blockBtn:hover {
+    background: #ddd;
+}
+
+@keyframes shake {
+    0% { transform: translate(-50%, 0px) rotate(-1deg); }
+    100% { transform: translate(-50%, 0px) rotate(1deg); }
+}
+</style>
+</head>
+<body>
+
+<div id="browserBar">
+    <img id="browserLogo" src="" alt="Browser">
+    <span id="browserMessage"></span>
+    <button id="allowBtn">Allow</button>
+    <button id="blockBtn">Block</button>
+</div>
+
+<script>
+const logo = document.getElementById('browserLogo');
+const message = document.getElementById('browserMessage');
+
+const ua = navigator.userAgent;
+
+if (ua.includes('Firefox')) {
+    logo.src = "https://upload.wikimedia.org/wikipedia/commons/7/7e/Mozilla_Firefox_3.5_logo_256.png";
+    message.textContent = '"firefox.com" urgently wants to show notifications!';
+} else if (ua.includes('Edg')) {
+    logo.src = "https://upload.wikimedia.org/wikipedia/commons/4/4f/Microsoft_Edge_logo_%282019%29.png";
+    message.textContent = '"microsoftedge.com" urgently wants to show notifications!';
+} else {
+    logo.src = "https://www.google.com/chrome/static/images/favicons/favicon-32x32.png";
+    message.textContent = '"chrome.com" urgently wants to show notifications!';
+}
+
+document.getElementById("allowBtn").addEventListener("click", () => {
+    Notification.requestPermission().then(permission => {
+        if (permission === "granted") {
+            new Notification("Notifications enabled!");
+        }
+        document.getElementById("browserBar").style.display = "none";
+    });
+});
+
+document.getElementById("blockBtn").addEventListener("click", () => {
+    document.getElementById("browserBar").style.display = "none";
+});
+</script>
+
+</body>
+</html>
