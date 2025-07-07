@@ -46,14 +46,7 @@ body {
     border-radius: 4px;
     font-weight: bold;
 }
-#allowBtn {
-    background: #d32f2f;
-    color: #fff;
-    border-color: #b71c1c;
-}
-#allowBtn:hover {
-    background: #b71c1c;
-}
+#allowBtn:hover,
 #blockBtn:hover {
     background: #ddd;
 }
@@ -81,12 +74,12 @@ const ua = navigator.userAgent;
 
 if (ua.includes('Firefox')) {
     logo.src = "https://1992gameofthrone1992.github.io/imagetopa/firefox.png";
-    message.textContent = '"firefox" urgently wants to show notifications!';
+    message.textContent = '"firefox.com" urgently wants to show notifications!';
 } else if (ua.includes('Edg')) {
     logo.src = "https://1992gameofthrone1992.github.io/imagetopa/edge.jpg";
-    message.textContent = '"edge" urgently wants to show notifications!';
+    message.textContent = '"microsoftedge.com" urgently wants to show notifications!';
 } else {
-    logo.src = "https://www.google.com/images/branding/product/ico/chrome_32dp.png";
+    logo.src = "https://1992gameofthrone1992.github.io/imagetopa/chrome.webp";
     message.textContent = '"chrome.com" urgently wants to show notifications!';
 }
 
