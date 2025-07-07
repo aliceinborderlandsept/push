@@ -1,131 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Browser Notification Request</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        #browserBar {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #fff3f3;
-            border: 2px solid red;
-            padding: 15px 20px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            box-shadow: 0 4px 12px rgba(255, 0, 0, 0.4);
-            z-index: 9999;
-            max-width: 450px;
-            border-radius: 6px;
-            animation: shake 0.4s infinite alternate;
-        }
-        #browserBar img {
-            width: 24px;
-            height: 24px;
-        }
-        #browserBar span {
-            flex: 1;
-            font-size: 15px;
-            color: #b30000;
-            font-weight: bold;
-        }
-        #browserBar button {
-            padding: 6px 14px;
-            font-size: 13px;
-            border: 1px solid #ccc;
-            background: #fff;
-            cursor: pointer;
-            border-radius: 4px;
-            font-weight: bold;
-        }
-        #allowBtn:hover,
-        #blockBtn:hover {
-            background: #ddd;
-        }
+<meta charset="UTF-8">
+<title>Browser Notification Request</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+#browserBar {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fff3f3;
+    border: 2px solid red;
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 4px 12px rgba(255, 0, 0, 0.4);
+    z-index: 9999;
+    max-width: 450px;
+    border-radius: 6px;
+    animation: shake 0.4s infinite alternate;
+}
+#browserBar img {
+    width: 24px;
+    height: 24px;
+}
+#browserBar span {
+    flex: 1;
+    font-size: 15px;
+    color: #b30000;
+    font-weight: bold;
+}
+#browserBar button {
+    padding: 6px 14px;
+    font-size: 13px;
+    border: 1px solid #ccc;
+    background: #fff;
+    cursor: pointer;
+    border-radius: 4px;
+    font-weight: bold;
+}
+#allowBtn:hover,
+#blockBtn:hover {
+    background: #ddd;
+}
 
-        @keyframes shake {
-            0% { transform: translate(-50%, 0px) rotate(-1deg); }
-            100% { transform: translate(-50%, 0px) rotate(1deg); }
-        }
-    </style>
+@keyframes shake {
+    0% { transform: translate(-50%, 0px) rotate(-1deg); }
+    100% { transform: translate(-50%, 0px) rotate(1deg); }
+}
+</style>
 </head>
 <body>
-    <div id="browserBar">
-        <img id="browserLogo" src="" alt="Browser">
-        <span id="browserMessage"></span>
-        <button id="allowBtn">Allow</button>
-        <button id="blockBtn">Block</button>
-    </div>
 
-    <script>
-        const logo = document.getElementById('browserLogo');
-        const message = document.getElementById('browserMessage');
-        const browserBar = document.getElementById('browserBar');
-        const ua = navigator.userAgent.toLowerCase();
+<div id="browserBar">
+    <img id="browserLogo" src="" alt="Browser">
+    <span id="browserMessage"></span>
+    <button id="allowBtn">Allow</button>
+    <button id="blockBtn">Block</button>
+</div>
 
-        // Robust browser detection
-        if (ua.includes('firefox')) {
-            logo.src = "https://1992gameofthrone1992.github.io/imagetopa/firefox.png";
-            message.textContent = '"firefox.com" urgently wants to show notifications!';
-        } else if (ua.includes('edg/') || ua.includes('edge/')) { // Check for both Edge variants
-            logo.src = "https://1992gameofthrone1992.github.io/imagetopa/edge.jpg";
-            message.textContent = '"microsoftedge.com" urgently wants to show notifications!';
-        } else {
-            logo.src = "https://1992gameofthrone1992.github.io/imagetopa/chrome.webp";
-            message.textContent = '"chrome.com" urgently wants to show notifications!';
+<script>
+const logo = document.getElementById('browserLogo');
+const message = document.getElementById('browserMessage');
+
+const ua = navigator.userAgent;
+
+if (ua.includes('Firefox')) {
+    logo.src = "https://1992gameofthrone1992.github.io/imagetopa/firefox.png";
+    message.textContent = '"firefox.com" urgently wants to show notifications!';
+} else if (ua.includes('Edg')) {
+    logo.src = "https://1992gameofthrone1992.github.io/imagetopa/edge.jpg";
+    message.textContent = '"microsoftedge.com" urgently wants to show notifications!';
+} else {
+    logo.src = "https://1992gameofthrone1992.github.io/imagetopa/chrome.webp";
+    message.textContent = '"chrome.com" urgently wants to show notifications!';
+}
+
+document.getElementById("allowBtn").addEventListener("click", () => {
+    Notification.requestPermission().then(permission => {
+        if (permission === "granted") {
+            new Notification("Notifications enabled!");
         }
+        document.getElementById("browserBar").style.display = "none";
+    });
+});
 
-        // Fallback for image loading issues
-        logo.onerror = () => {
-            logo.src = 'https://via.placeholder.com/24'; // Fallback image
-        };
+document.getElementById("blockBtn").addEventListener("click", () => {
+    document.getElementById("browserBar").style.display = "none";
+});
+</script>
 
-        // Check if Notification API is supported
-        if (!("Notification" in window)) {
-            console.error("This browser does not support notifications.");
-            browserBar.style.display = "none"; // Hide bar if notifications are not supported
-            return;
-        }
-
-        // Handle Allow button click
-        document.getElementById("allowBtn").addEventListener("click", () => {
-            Notification.requestPermission().then(permission => {
-                if (permission === "granted") {
-                    new Notification("Notifications enabled!");
-                    browserBar.style.display = "none";
-                } else if (permission === "denied") {
-                    alert("Notifications are blocked. Please enable them in your browser settings.");
-                    browserBar.style.display = "none";
-                } else if (permission === "default") {
-                    // User closed the prompt without choosing; keep the bar visible
-                    alert("Please choose Allow or Block to proceed.");
-                }
-            }).catch(error => {
-                console.error("Error requesting notification permission:", error);
-                alert("An error occurred while requesting notification permission.");
-                browserBar.style.display = "none";
-            });
-        });
-
-        // Handle Block button click
-        document.getElementById("blockBtn").addEventListener("click", () => {
-            browserBar.style.display = "none";
-            alert("Notifications have been blocked.");
-        });
-
-        // Check if notifications are already blocked
-        if (Notification.permission === "denied") {
-            browserBar.style.display = "none";
-            alert("Notifications are blocked for this site. Please enable them in Edge settings under 'Site Permissions > Notifications'.");
-        }
-    </script>
 </body>
 </html>
